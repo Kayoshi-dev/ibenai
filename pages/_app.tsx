@@ -1,8 +1,36 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from "next/app";
+import Head from "next/head";
+import { MantineProvider } from "@mantine/core";
+import "../styles/global.scss";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+export default function MyApp(props: AppProps) {
+  const { Component, pageProps } = props;
+
+  return (
+    <>
+      <Head>
+        <title>Page title</title>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
+
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          colorScheme: "light",
+          headings: {
+            fontFamily: "Inter, sans-serif",
+          },
+          fontFamily: "Inter, sans-serif",
+        }}
+      >
+        {/*<MainWrapper>*/}
+        <Component {...pageProps} />
+        {/*</MainWrapper>*/}
+      </MantineProvider>
+    </>
+  );
 }
-
-export default MyApp

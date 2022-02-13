@@ -1,0 +1,6 @@
+.mantine-TextInput-input {
+  transition: background .2s ease-in-out;
+  &:focus {
+    background: #f8fafb;
+  }
+}
