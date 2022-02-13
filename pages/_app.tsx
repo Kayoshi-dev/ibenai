@@ -1,10 +1,10 @@
-import { AppProps } from "next/app";
-import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
-import "../styles/global.scss";
+import { AppProps } from "next/app"
+import Head from "next/head"
+import { MantineProvider } from "@mantine/core"
+import "../styles/global.scss"
 
 export default function MyApp(props: AppProps) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps } = props
 
   return (
     <>
@@ -32,5 +32,5 @@ export default function MyApp(props: AppProps) {
         {/*</MainWrapper>*/}
       </MantineProvider>
     </>
-  );
+  )
 }

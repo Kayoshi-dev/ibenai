@@ -6,17 +6,17 @@ import {
   TextInput,
   Popover,
   InputWrapper,
-} from "@mantine/core";
+} from "@mantine/core"
 import {
   EnvelopeOpenIcon,
   LockClosedIcon,
   PersonIcon,
-} from "@radix-ui/react-icons";
-import { useState } from "react";
-import { useForm } from "@mantine/hooks";
+} from "@radix-ui/react-icons"
+import { useState } from "react"
+import { useForm } from "@mantine/hooks"
 
 export default function RegisterForm() {
-  const [popoverOpened, setPopoverOpened] = useState(false);
+  const [popoverOpened, setPopoverOpened] = useState(false)
 
   const form = useForm({
     initialValues: {
@@ -43,7 +43,7 @@ export default function RegisterForm() {
       passwordConfirm: "Passwords do not match",
       termsAndCondition: "Please accept the terms and conditions",
     },
-  });
+  })
 
   return (
     <form
@@ -137,5 +137,5 @@ export default function RegisterForm() {
         Register
       </Button>
     </form>
-  );
+  )
 }

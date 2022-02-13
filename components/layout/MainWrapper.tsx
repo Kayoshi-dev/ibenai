@@ -14,7 +14,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { createStyles } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 const useStyles = createStyles((theme) => {
   return {

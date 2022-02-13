@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { Title } from "@mantine/core";
+import type { NextPage } from "next"
+import Head from "next/head"
+import { Title } from "@mantine/core"
 
 const Home: NextPage = () => {
   return (
@@ -14,6 +14,6 @@ const Home: NextPage = () => {
       <Title>psalut</Title>
       <p>Hello world!</p>
     </div>
-  );
-};
-export default Home;
+  )
+}
+export default Home
