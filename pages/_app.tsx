@@ -1,10 +1,11 @@
-import { AppProps } from "next/app"
-import Head from "next/head"
-import { MantineProvider } from "@mantine/core"
-import "../styles/global.scss"
+import { AppProps } from "next/app";
+import Head from "next/head";
+import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import "../styles/global.scss";
 
 export default function MyApp(props: AppProps) {
-  const { Component, pageProps } = props
+  const { Component, pageProps } = props;
 
   return (
     <>
@@ -27,10 +28,12 @@ export default function MyApp(props: AppProps) {
           fontFamily: "Inter, sans-serif",
         }}
       >
-        {/*<MainWrapper>*/}
-        <Component {...pageProps} />
-        {/*</MainWrapper>*/}
+        <ModalsProvider>
+          {/*<MainWrapper>*/}
+          <Component {...pageProps} />
+          {/*</MainWrapper>*/}
+        </ModalsProvider>
       </MantineProvider>
     </>
-  )
+  );
 }

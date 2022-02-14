@@ -11,6 +11,7 @@ import {
   Menu,
   Text,
   Title,
+  Modal,
   useMantineTheme,
 } from "@mantine/core";
 import Image from "next/image";
@@ -26,6 +27,9 @@ import {
   PinRightIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import ShareModal from "../../components/modals/ShareModal/ShareModal";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Map = dynamic(() => import("../../components/map/Map"), {
   ssr: false,
@@ -33,6 +37,7 @@ const Map = dynamic(() => import("../../components/map/Map"), {
 
 export default function Event() {
   const theme = useMantineTheme();
+  const [opened, setOpened] = useState(false);
 
   return (
     <Container size="xl">
@@ -41,12 +46,15 @@ export default function Event() {
           <Title>Ibenai</Title>
 
           <Group>
+            <Link href="#" passHref>
+              <a>Create a new event</a>
+            </Link>
+
             <Menu
               position="bottom"
               transition="scale-y"
               transitionDuration={100}
               transitionTimingFunction="ease"
-              styles={{ root: { zIndex: 10000 }, body: { zIndex: 10000 } }}
               control={
                 <Avatar
                   radius="xl"
@@ -84,25 +92,37 @@ export default function Event() {
           </Group>
         </Group>
       </Header>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Share this event with your friends"
+      >
+        <ShareModal />
+      </Modal>
       <Grid>
         <Grid.Col span={12} md={8}>
-          <Image
-            src="https://images.unsplash.com/photo-1596240748549-6ec0f32d4c95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-            layout="responsive"
-            width="100%"
-            height="50%"
-            alt="Event"
-            priority
-          />
+          <Box mb="md">
+            <Image
+              src="https://images.unsplash.com/photo-1596240748549-6ec0f32d4c95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+              layout="responsive"
+              width="100%"
+              height="50%"
+              alt="Event"
+              priority
+            />{" "}
+          </Box>
 
           <Group position="apart">
             <Title>Mon évènement</Title>
+            <motion.div animate={{ scale: 0.5 }} />
+
             <Group spacing="xs">
               <Button
                 color="indigo"
                 radius="md"
                 variant="outline"
                 leftIcon={<MdQrCode2 />}
+                onClick={() => setOpened(true)}
               >
                 Show QR Code
               </Button>
@@ -166,7 +186,7 @@ export default function Event() {
             })}
           >
             <Title order={3}>Location of the event</Title>
-            <Map />
+            <Map showFullscreenButton />
           </Group>
         </Grid.Col>
       </Grid>

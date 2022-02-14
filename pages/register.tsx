@@ -8,16 +8,15 @@ import {
   Title,
   useMantineColorScheme,
   useMantineTheme,
-} from "@mantine/core"
-import Image from "next/image"
-import RegisterForm from "../components/forms/RegisterForm"
-import { FcGoogle } from "react-icons/fc"
-import { BsFacebook, BsTwitter } from "react-icons/bs"
-import OAuthButton from "../components/buttons/OAuthButton"
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
+} from "@mantine/core";
+import Image from "next/image";
+import RegisterForm from "../components/forms/RegisterForm";
+import { FcGoogle } from "react-icons/fc";
+import { BsFacebook, BsTwitter } from "react-icons/bs";
+import OAuthButton from "../components/buttons/OAuthButton";
 
 export default function Register() {
-  const theme = useMantineTheme()
+  const theme = useMantineTheme();
 
   return (
     <Container fluid style={{ padding: 0 }}>
@@ -99,5 +98,5 @@ export default function Register() {
         </Grid.Col>
       </Grid>
     </Container>
-  )
+  );
 }
