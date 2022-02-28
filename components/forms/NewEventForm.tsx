@@ -1,104 +1,133 @@
-import { useState, useEffect, forwardRef, useRef } from "react";
-import { useRouter } from "next/router";
-import { useForm, useDebouncedValue } from "@mantine/hooks";
+import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import {
-  TextInput,
-  Button,
-  Container,
   Group,
   useMantineTheme,
   Text,
-  Grid,
-  Col,
-  MultiSelect,
-  Checkbox,
+  Container,
   InputWrapper,
+  TextInput,
+  createStyles,
+  Title,
+  Button,
+  SimpleGrid,
+  Grid,
+  Box,
   Autocomplete,
+  MantineTheme,
 } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
-import {
-  CameraIcon,
-  UploadIcon,
-  CrossCircledIcon,
-} from "@radix-ui/react-icons";
+import { ImageIcon, UploadIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+import { useDebouncedValue, useForm } from "@mantine/hooks";
+import RichTextEditor from "../../components/forms/QuillEditor";
+import { DatePicker } from "@mantine/dates";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
-export default function Create() {
-  const [currentHeader, setCurrentHeader] = useState("");
+const DraggableMarkerMap = dynamic(
+  () => import("../../components/map/DraggableMarkerMap"),
+  {
+    ssr: false,
+  }
+);
 
-  const dropZoneRef = useRef();
+// @ts-ignore
+function ImageUploadIcon({ status, ...props }) {
+  if (status.accepted) {
+    return <UploadIcon {...props} />;
+  }
 
+  if (status.rejected) {
+    return <CrossCircledIcon {...props} />;
+  }
+
+  return <ImageIcon {...props} />;
+}
+
+function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
+  return status.accepted
+    ? theme.colors[theme.primaryColor][6]
+    : status.rejected
+    ? theme.colors.red[6]
+    : theme.colorScheme === "dark"
+    ? theme.colors.dark[0]
+    : theme.black;
+}
+
+export default function NewEventForm() {
   const theme = useMantineTheme();
-
-  const form = useForm({
-    initialValues: {},
+  const form = useForm<{
+    coverPicture: File[] | null;
+    title: string;
+    description: string;
+    address: string;
+  }>({
+    initialValues: {
+      coverPicture: null,
+      title: "",
+      description: "",
+      address: "",
+    },
 
     validationRules: {},
+
+    errorMessages: {},
   });
 
-  // Update the icon displayed based on the file dragged
-  // @ts-ignore
-  const ImageUploadIcon = ({ status, ...props }) => {
-    if (status.accepted) {
-      return <UploadIcon {...props} />;
-    }
+  const [debouncedSearch] = useDebouncedValue(form?.values.address, 500);
 
-    if (status.rejected) {
-      return <CrossCircledIcon {...props} />;
-    }
+  /*  useEffect(() => {
+    (async () => {
+      const rawData = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${debouncedSearch}&format=json`
+      );
+      const formattedData = await rawData.json();
 
-    return <CameraIcon {...props} />;
+      console.log(formattedData);
+    })();
+  }, [debouncedSearch]);*/
+
+  const onDropFile = (file: File[]) => {
+    form.setFieldValue("coverPicture", file);
   };
 
-  // Update IconColor based on the drag event
-  const getIconColor = (status, theme) => {
-    return status.accepted
-      ? theme.colors[theme.primaryColor][6]
-      : status.rejected
-      ? theme.colors.red[6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.black;
-  };
+  const useStyles = createStyles(() => ({
+    root: {
+      padding: form.values.coverPicture ? "0px" : "",
+    },
+  }));
 
-  //Handle the header uploading to the form
-  const handleHeaderUpload = (file) => {
-    form.setFieldValue("header", file);
-    setCurrentHeader(file);
-  };
+  const { classes } = useStyles();
 
   return (
     <Container>
-      <form encType="multipart/form-data" method={"post"}>
-        <h1>Créer un nouvel évènement</h1>
-
+      <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <InputWrapper
-          label="Ajouter une photo de couverture"
-          style={{ marginBottom: "1em" }}
+          label="Cover picture"
           error={
-            form.errors.header &&
+            form.errors.coverPicture &&
             "La photo de couverture n'est pas de type File"
           }
+          required
         >
           <Dropzone
-            ref={dropZoneRef}
-            onDrop={handleHeaderUpload}
+            onDrop={onDropFile}
+            onReject={(files) => console.log("rejected files", files)}
             maxSize={3 * 1024 ** 2}
-            accept={["image/png", "image/jpeg", "image/sgv+xml"]}
+            accept={IMAGE_MIME_TYPE}
             multiple={false}
-            styles={currentHeader ? { root: { padding: "0px" } } : ""}
-            id="dropzone-header"
-            value={form.values.header}
+            classNames={{ root: classes.root }}
           >
             {(status) => (
               <>
-                {currentHeader ? (
+                {form.values.coverPicture ? (
                   <img
-                    src={URL.createObjectURL(new Blob(form.values.header))}
-                    alt="Alternative text for image"
+                    src={URL.createObjectURL(
+                      new Blob(form.values.coverPicture)
+                    )}
+                    alt="The image you just uploaded !"
                     style={{
-                      maxHeight: "228px",
+                      maxHeight: "256px",
                       objectFit: "cover",
-                      minHeight: "228px",
+                      minHeight: "256px",
                       width: "100%",
                     }}
                   />
@@ -119,11 +148,11 @@ export default function Create() {
 
                     <div>
                       <Text size="xl" inline>
-                        Faites glisser la photo de couverture de votre évènement
+                        Drag images here or click to select files
                       </Text>
                       <Text size="sm" color="dimmed" inline mt={7}>
-                        Faites attention que l&apos;image ne soit pas trop
-                        lourde :)
+                        Attach as many files as you like, each file should not
+                        exceed 5mb
                       </Text>
                     </div>
                   </Group>
@@ -133,146 +162,61 @@ export default function Create() {
           </Dropzone>
         </InputWrapper>
 
+        <Title>Indication of the place</Title>
         <TextInput
           required
-          placeholder="Sortie à Paris !"
-          label="Titre de votre évènement"
-          error={
-            form.errors.title &&
-            "Veuillez spécifier un titre pour votre évènement"
-          }
-          value={form.values.title}
-          onChange={(event) =>
-            form.setFieldValue("title", event.currentTarget.value)
-          }
+          placeholder="Paris!"
+          label="Event title"
+          {...form.getInputProps("title")}
           style={{ marginBottom: "1em" }}
+          radius="md"
         />
 
-        {/*        <InputWrapper
-          label="Description de l'évènement"
-          required
-          style={{ marginBottom: "1em" }}
-          error={
-            form.errors.description &&
-            "Veuillez spécifier une description pour votre évènement (minimum 10 caractères)"
-          }
-        >
+        <InputWrapper label="Description of the event" required>
           <RichTextEditor
+            radius="md"
             value={form.values.description}
             onChange={(e) => form.setFieldValue("description", e)}
           />
-        </InputWrapper>*/}
+        </InputWrapper>
 
-        <Grid style={{ marginBottom: "1em" }}>
-          {/*          <Col span={12} md={6}>
-            <InputWrapper
-              label="Date de commencement"
-              required
-              error={
-                form.errors.startDate &&
-                "Veuillez saisir une date de début d'évènement"
-              }
-            >
-              <DatePicker
-                dateFormat="dd/MM/yyyy"
-                calendarStartDay={1}
-                selectsStart
-                minDate={Date.now()}
-                startDate={form.values.startDate}
-                endDate={form.values.endDate}
-                locale="fr"
-                selected={form.values.startDate}
-                onChange={(date) => form.setFieldValue("startDate", date)}
-                className="mantine-TextInput-input"
-                value={form.values.startDate}
-              />
-            </InputWrapper>
-          </Col>
-          <Col span={12} md={6}>
-            <InputWrapper
-              label="Date de fin"
-              required
-              error={
-                form.errors.endDate &&
-                "Veuillez saisir une date de fin d'évènement"
-              }
-            >
-              <DatePicker
-                dateFormat="dd/MM/yyyy"
-                calendarStartDay={1}
-                locale="fr"
-                selectsEnd
-                minDate={form.values.startDate}
-                startDate={form.values.startDate}
-                endDate={form.values.endDate}
-                selected={form.values.endDate}
-                onChange={(date) => form.setFieldValue("endDate", date)}
-                className="mantine-TextInput-input"
-              />
-            </InputWrapper>
-          </Col>*/}
-          {/*          <Col span={12} md={5}>
-            <Autocomplete
-              value={form.values.adress}
-              onChange={(adress) => form.setFieldValue("adress", adress)}
-              label="Indiquez l'adresse de rendez-vous"
-              placeholder="Rue de l'internet..."
-              required
-              data={suggestions}
-              filter={(_, item) => item}
-              itemComponent={AutoCompleteItem}
-              onItemSubmit={handleItemConfirmation}
-              error={form.errors.adress && "Veuillez préciser l'adresse"}
-            />
-          </Col>*/}
+        <SimpleGrid cols={2}>
+          <DatePicker
+            placeholder="Pick the starting date"
+            label="Pick the starting date"
+            required
+          />
 
-          <Col span={12} md={4}>
+          <DatePicker
+            placeholder="Pick the ending date"
+            label="Pick the ending date"
+            required
+          />
+        </SimpleGrid>
+
+        <Title order={3}>Location of the event</Title>
+
+        <Box
+          sx={(theme) => ({
+            borderRadius: theme.radius.md,
+            marginBottom: theme.spacing.md,
+            height: "450px",
+          })}
+        >
+          <DraggableMarkerMap onChangeAdress={form.setFieldValue} />
+        </Box>
+
+        <Grid>
+          <Grid.Col span={12}>
             <TextInput
-              required
-              placeholder="Paris, Grenoble...."
-              label="Ville"
-              error={form.errors.city && "Veuillez spécifier une ville..."}
-              value={form.values.city}
-              onChange={(event) =>
-                form.setFieldValue("city", event.currentTarget.value)
-              }
+              label="Choose the location of the event"
+              placeholder="Pick one"
+              {...form.getInputProps("address")}
             />
-          </Col>
-
-          <Col span={12} md={3}>
-            <TextInput
-              required
-              placeholder="96440"
-              label="Code postal"
-              error={
-                form.errors.zipCode && "Veuillez renseigner le code postal"
-              }
-              value={form.values.zipCode}
-              onChange={(event) =>
-                form.setFieldValue("zipCode", event.currentTarget.value)
-              }
-            />
-          </Col>
+          </Grid.Col>
         </Grid>
 
-        <MultiSelect
-          label="Ajouter des participants"
-          data={[]}
-          placeholder="emmanuel.macron@elysee.fr"
-          searchable
-          creatable
-          getCreateLabel={(query) => `+ Ajouter l'adresse mail : ${query}`}
-          onCreate={(query) => setAttendees((current) => [...current, query])}
-          style={{ marginBottom: "1em" }}
-        />
-
-        <Checkbox
-          label="Cet évènement est privé"
-          style={{ marginBottom: "1em" }}
-          color="indigo"
-        />
-
-        <Button type="submit" color="indigo">
+        <Button type="submit" color="indigo" radius="md">
           Créer !
         </Button>
       </form>

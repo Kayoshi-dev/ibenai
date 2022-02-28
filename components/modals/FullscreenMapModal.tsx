@@ -1,5 +1,4 @@
-import { LatLngTuple } from "leaflet";
-import { Box, useMantineTheme } from "@mantine/core";
+import { Box } from "@mantine/core";
 import Map from "../map/Map";
 
 export default function FullscreenMapModal() {
