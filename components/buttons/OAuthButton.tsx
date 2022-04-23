@@ -1,9 +1,9 @@
-import { Button, useMantineTheme } from "@mantine/core"
+import { Button } from "@mantine/core";
 
 export declare interface IOAuthButtonProps {
-  provider: "Facebook" | "Google" | "Twitter"
-  link: string
-  icon: JSX.Element
+  provider: "Facebook" | "Google" | "Twitter";
+  link: string;
+  icon: JSX.Element;
 }
 
 export default function OAuthButton({
@@ -29,5 +29,5 @@ export default function OAuthButton({
     >
       Connect with {provider} {icon}
     </Button>
-  )
+  );
 }

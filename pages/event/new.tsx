@@ -1,10 +1,13 @@
-import { Center, InputWrapper, TextInput } from "@mantine/core";
 import NewEventForm from "../../components/forms/NewEventForm";
+import { Container, Title } from "@mantine/core";
 
 export default function NewEvent() {
   return (
-    <Center>
+    <Container>
+      <Title>New Event</Title>
       <NewEventForm />
-    </Center>
+    </Container>
   );
 }
+
+NewEvent.layout = "main";

@@ -6,17 +6,19 @@ import {
   TextInput,
   Popover,
   InputWrapper,
-} from "@mantine/core"
+  useMantineTheme,
+} from "@mantine/core";
 import {
   EnvelopeOpenIcon,
   LockClosedIcon,
   PersonIcon,
-} from "@radix-ui/react-icons"
-import { useState } from "react"
-import { useForm } from "@mantine/hooks"
+} from "@radix-ui/react-icons";
+import { useState } from "react";
+import { useForm, useMediaQuery } from "@mantine/hooks";
 
 export default function RegisterForm() {
-  const [popoverOpened, setPopoverOpened] = useState(false)
+  const [popoverOpened, setPopoverOpened] = useState(false);
+  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: {
@@ -43,7 +45,7 @@ export default function RegisterForm() {
       passwordConfirm: "Passwords do not match",
       termsAndCondition: "Please accept the terms and conditions",
     },
-  })
+  });
 
   return (
     <form
@@ -54,7 +56,6 @@ export default function RegisterForm() {
         placeholder="foo@bar.fr"
         label="Your email"
         icon={<EnvelopeOpenIcon />}
-        radius="md"
         sx={(theme) => ({ marginBottom: theme.spacing.md })}
         {...form.getInputProps("email")}
         required
@@ -65,7 +66,6 @@ export default function RegisterForm() {
         label="Your username"
         description="Your username is used to identify you on the site and will be displayed publicly on your profile"
         icon={<PersonIcon />}
-        radius="md"
         sx={(theme) => ({ marginBottom: theme.spacing.md })}
         {...form.getInputProps("username")}
         required
@@ -79,16 +79,16 @@ export default function RegisterForm() {
         style={{ width: "100%" }}
         styles={{ popover: { width: "100%" } }}
         sx={(theme) => ({ marginBottom: theme.spacing.md })}
-        noFocusTrap
+        trapFocus={false}
         transition="pop-top-left"
         onFocusCapture={() => setPopoverOpened(true)}
         onBlurCapture={() => setPopoverOpened(false)}
         target={
           <PasswordInput
+            color="indigo"
             required
             label="Your password"
             placeholder="Your password"
-            radius="md"
             description="Strong password should include letters in lower and uppercase, at least 1 number, at least 1 special symbol"
             icon={<LockClosedIcon />}
             {...form.getInputProps("password")}
@@ -123,19 +123,15 @@ export default function RegisterForm() {
         sx={(theme) => ({ marginBottom: theme.spacing.md })}
       >
         <Checkbox
+          color="indigo"
           label="I agree with the terms and conditions"
           {...form.getInputProps("termsAndCondition", { type: "checkbox" })}
         />
       </InputWrapper>
 
-      <Button
-        color="indigo"
-        type="submit"
-        radius="md"
-        style={{ width: "100%" }}
-      >
+      <Button color="indigo" type="submit" style={{ width: "100%" }}>
         Register
       </Button>
     </form>
-  )
+  );
 }
