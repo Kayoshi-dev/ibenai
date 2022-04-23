@@ -1,4 +1,4 @@
-import { Button, Group, Title } from "@mantine/core";
+import { Button, Group, Input, Title } from "@mantine/core";
 import { HiOutlineRefresh } from "react-icons/hi";
 
 export default function DigitCode() {
@@ -9,28 +9,28 @@ export default function DigitCode() {
       </Title>
 
       <Group position="center" mb="md">
-        <input
+        <Input
           type="text"
           maxLength={1}
           className="digit-input"
           value={1}
           readOnly
         />
-        <input
+        <Input
           type="text"
           maxLength={1}
           className="digit-input"
           value={1}
           readOnly
         />
-        <input
+        <Input
           type="text"
           maxLength={1}
           className="digit-input"
           value={1}
           readOnly
         />
-        <input
+        <Input
           type="text"
           maxLength={1}
           className="digit-input"

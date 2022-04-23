@@ -1,10 +1,3 @@
-.mantine-TextInput-input {
-  transition: background 0.2s ease-in-out;
-  &:focus {
-    background: #f8fafb;
-  }
-}
-
 .digit-input {
   margin: 0 0.5rem;
   padding: 0.5rem;
@@ -13,9 +6,12 @@
   text-align: center;
   font-size: 3rem;
   border: none;
-  border-bottom: 1px solid black;
 
   &:focus {
-  outline: none;
+    outline: none;
+  }
 }
+
+.ql-editor {
+  min-height: 10em;
 }

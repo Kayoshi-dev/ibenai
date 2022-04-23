@@ -4,11 +4,9 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   Grid,
   Group,
   Header,
-  Menu,
   Text,
   Title,
   Modal,
@@ -18,15 +16,6 @@ import Image from "next/image";
 import { MdQrCode2 } from "react-icons/md";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {
-  ChatBubbleIcon,
-  GearIcon,
-  ImageIcon,
-  MagnifyingGlassIcon,
-  PersonIcon,
-  PinRightIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
 import ShareModal from "../../components/modals/ShareModal/ShareModal";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -41,7 +30,7 @@ export default function Event() {
 
   return (
     <Container size="xl">
-      <Header height={60} padding="xs">
+      <Header height={60}>
         <Group position="apart">
           <Title>Ibenai</Title>
 
@@ -49,46 +38,6 @@ export default function Event() {
             <Link href="#" passHref>
               <a>Create a new event</a>
             </Link>
-
-            <Menu
-              position="bottom"
-              transition="scale-y"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-              control={
-                <Avatar
-                  radius="xl"
-                  sx={() => ({
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  })}
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-                />
-              }
-            >
-              <Menu.Label>Application</Menu.Label>
-              <Menu.Item icon={<PersonIcon />}>My Profile</Menu.Item>
-              <Menu.Item icon={<ChatBubbleIcon />}>Messages</Menu.Item>
-              <Menu.Item icon={<ImageIcon />}>Gallery</Menu.Item>
-              <Menu.Item
-                icon={<MagnifyingGlassIcon />}
-                rightSection={
-                  <Text size="xs" color="dimmed">
-                    ⌘K
-                  </Text>
-                }
-              >
-                Search
-              </Menu.Item>
-              <Divider />
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item icon={<PinRightIcon />}>Transfer my data</Menu.Item>,
-              <Menu.Item icon={<GearIcon />}>Parameters</Menu.Item>,
-              <Menu.Item color="red" icon={<TrashIcon />}>
-                Delete my account
-              </Menu.Item>
-            </Menu>
           </Group>
         </Group>
       </Header>
@@ -100,7 +49,7 @@ export default function Event() {
         <ShareModal />
       </Modal>
       <Grid>
-        <Grid.Col span={12} md={8}>
+        <Grid.Col span={12} lg={8}>
           <Box mb="md">
             <Image
               src="https://images.unsplash.com/photo-1596240748549-6ec0f32d4c95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
@@ -177,11 +126,10 @@ export default function Event() {
             </Text>
           </Box>
         </Grid.Col>
-        <Grid.Col span={12} md={4}>
+        <Grid.Col span={12} lg={4}>
           <Group
             sx={(theme) => ({
               padding: theme.spacing.sm,
-              borderRadius: theme.radius.md,
               height: "45%",
             })}
           >

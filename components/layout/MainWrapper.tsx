@@ -9,11 +9,25 @@ import {
   Collapse,
   ActionIcon,
   useMantineColorScheme,
+  Avatar,
+  Menu,
+  Divider,
 } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
 import { createStyles } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import {
+  ChatBubbleIcon,
+  GearIcon,
+  ImageIcon,
+  MagnifyingGlassIcon,
+  PersonIcon,
+  PinRightIcon,
+  TrashIcon,
+  MoonIcon,
+  SunIcon,
+} from "@radix-ui/react-icons";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -37,6 +51,8 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
   const superiorMedium = useMediaQuery(
     `(min-width: ${theme.breakpoints.md}px)`
   );
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === "dark";
 
   // Automatically close the burger if the user gets somehow a larger screen (maybe by switching to the landscape format I dunno stop reading that omg)
   if (superiorMedium && opened) {
@@ -64,7 +80,7 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
               transition: "all .2s",
             })}
           >
-            Mon blog
+            いべない！
           </Title>
         </Link>
 
@@ -83,16 +99,86 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
         <MediaQuery smallerThan="md" styles={{ display: "none" }}>
           <Group position="apart" spacing="xl">
             <Link href="/" passHref>
-              <Text component="a" weight={500}>
-                Accueil
+              <Text
+                component="a"
+                weight={500}
+                sx={(theme) => ({
+                  padding: theme.spacing.xs,
+                  borderRadius: theme.radius.md,
+                  "&:hover": {
+                    background: theme.colors.gray[1],
+                  },
+                  transition: "all .2s",
+                })}
+              >
+                Home
               </Text>
             </Link>
 
             <Link href="/" passHref>
-              <Text component="a" weight={500}>
-                A propos
+              <Text
+                component="a"
+                weight={500}
+                sx={(theme) => ({
+                  padding: theme.spacing.xs,
+                  borderRadius: theme.radius.md,
+                  "&:hover": {
+                    background: theme.colors.gray[1],
+                  },
+                  transition: "all .2s",
+                })}
+              >
+                About
               </Text>
             </Link>
+
+            <ActionIcon
+              color={dark ? "yellow" : "blue"}
+              onClick={() => toggleColorScheme()}
+              title="Toggle color scheme"
+            >
+              {dark ? <SunIcon /> : <MoonIcon />}
+            </ActionIcon>
+
+            <Menu
+              position="bottom"
+              transition="scale-y"
+              transitionDuration={100}
+              transitionTimingFunction="ease"
+              control={
+                <Avatar
+                  radius="xl"
+                  sx={() => ({
+                    "&:hover": {
+                      cursor: "pointer",
+                    },
+                  })}
+                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+                />
+              }
+            >
+              <Menu.Label>Application</Menu.Label>
+              <Menu.Item icon={<PersonIcon />}>My Profile</Menu.Item>
+              <Menu.Item icon={<ChatBubbleIcon />}>Messages</Menu.Item>
+              <Menu.Item icon={<ImageIcon />}>Gallery</Menu.Item>
+              <Menu.Item
+                icon={<MagnifyingGlassIcon />}
+                rightSection={
+                  <Text size="xs" color="dimmed">
+                    ⌘K
+                  </Text>
+                }
+              >
+                Search
+              </Menu.Item>
+              <Divider />
+              <Menu.Label>Danger zone</Menu.Label>
+              <Menu.Item icon={<PinRightIcon />}>Transfer my data</Menu.Item>
+              <Menu.Item icon={<GearIcon />}>Parameters</Menu.Item>
+              <Menu.Item color="red" icon={<TrashIcon />}>
+                Delete my account
+              </Menu.Item>
+            </Menu>
           </Group>
         </MediaQuery>
       </Group>
