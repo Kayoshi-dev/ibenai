@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { MantineProvider, ColorSchemeProvider } from "@mantine/core";
+import { MantineProvider, ColorSchemeProvider, Global } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import "../styles/global.scss";
 import MainWrapper from "../components/layout/MainWrapper";
@@ -44,6 +44,7 @@ export default function MyApp(props) {
             },
             fontFamily: "Inter, sans-serif",
             defaultRadius: "md",
+            white: "#eff2f5",
           }}
         >
           <ModalsProvider>

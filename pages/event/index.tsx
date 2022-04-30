@@ -11,6 +11,9 @@ import {
   Title,
   Modal,
   useMantineTheme,
+  Badge,
+  Popover,
+  Tooltip,
 } from "@mantine/core";
 import Image from "next/image";
 import { MdQrCode2 } from "react-icons/md";
@@ -19,6 +22,7 @@ import Link from "next/link";
 import ShareModal from "../../components/modals/ShareModal/ShareModal";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { BsCalendarEvent } from "react-icons/bs";
 
 const Map = dynamic(() => import("../../components/map/Map"), {
   ssr: false,
@@ -27,6 +31,7 @@ const Map = dynamic(() => import("../../components/map/Map"), {
 export default function Event() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [openedPopover, setOpenedPopover] = useState(false);
 
   return (
     <Container size="xl">
@@ -81,14 +86,71 @@ export default function Event() {
             </Group>
           </Group>
 
-          <Text color="dimmed">Tuesday, 26 April 2022 at 20:00</Text>
+          <Group spacing="xs" style={{ color: theme.colors.gray[6] }}>
+            <BsCalendarEvent />
 
-          <Group mb={theme.spacing.xl}>
-            <AvatarsGroup limit={3}>
+            <Text>Tuesday, 26 April 2022 at 20:00</Text>
+          </Group>
+
+          <Tooltip
+            wrapLines
+            width={220}
+            withArrow
+            transition="fade"
+            transitionDuration={200}
+            label="Use this button to save this information in your profile, after that you will be able to access it any time and share it via email."
+          >
+            <Avatar
+              style={{ borderLeft: "2px solid white" }}
+              radius="xl"
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              onMouseEnter={() => setOpenedPopover(true)}
+              onMouseLeave={() => setOpenedPopover(false)}
+            />
+          </Tooltip>
+
+          <Tooltip
+            style={{ marginLeft: "-10px" }}
+            wrapLines
+            width={220}
+            withArrow
+            transition="fade"
+            transitionDuration={200}
+            label="Use this button to save this information in your profile, after that you will be able to access it any time and share it via email."
+          >
+            <Avatar
+              style={{ borderLeft: "2px solid white" }}
+              radius="xl"
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              onMouseEnter={() => setOpenedPopover(true)}
+              onMouseLeave={() => setOpenedPopover(false)}
+            />
+          </Tooltip>
+
+          <Tooltip
+            style={{ marginLeft: "-10px" }}
+            wrapLines
+            width={220}
+            withArrow
+            transition="fade"
+            transitionDuration={200}
+            label="Test"
+          >
+            <Avatar
+              style={{ borderLeft: "2px solid white" }}
+              radius="xl"
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              onMouseEnter={() => setOpenedPopover(true)}
+              onMouseLeave={() => setOpenedPopover(false)}
+            />
+          </Tooltip>
+
+          <Group mb="xl">
+            <AvatarsGroup limit={3} total={5}>
               <Avatar
                 src="https://randomuser.me/api/portraits/men/32.jpg"
-                component="a"
-                href="https://github.com/rtivital"
+                onMouseEnter={() => setOpenedPopover(true)}
+                onMouseLeave={() => setOpenedPopover(false)}
               />
               <Avatar src="https://randomuser.me/api/portraits/men/33.jpg" />
               <Avatar src="https://randomuser.me/api/portraits/men/34.jpg" />

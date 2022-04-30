@@ -12,6 +12,8 @@ import {
   Avatar,
   Menu,
   Divider,
+  TextInput,
+  Box,
 } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
@@ -28,6 +30,7 @@ import {
   MoonIcon,
   SunIcon,
 } from "@radix-ui/react-icons";
+import { BiSearchAlt2 } from "react-icons/bi";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -35,6 +38,13 @@ const useStyles = createStyles((theme) => {
       fontSize: "5rem",
       [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
         fontSize: "3.2rem",
+      },
+    },
+    hoverSearchIcon: {
+      color: theme.colors.gray[5],
+
+      "&:hover": {
+        cursor: "pointer",
       },
     },
   };
@@ -98,6 +108,11 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
 
         <MediaQuery smallerThan="md" styles={{ display: "none" }}>
           <Group position="apart" spacing="xl">
+            <TextInput
+              classNames={{ rightSection: classes.hoverSearchIcon }}
+              placeholder="Search for events"
+              rightSection={<BiSearchAlt2 />}
+            />
             <Link href="/" passHref>
               <Text
                 component="a"
@@ -106,7 +121,9 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
                   padding: theme.spacing.xs,
                   borderRadius: theme.radius.md,
                   "&:hover": {
-                    background: theme.colors.gray[1],
+                    background: dark
+                      ? theme.colors.dark[8]
+                      : theme.colors.gray[2],
                   },
                   transition: "all .2s",
                 })}
@@ -123,7 +140,9 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
                   padding: theme.spacing.xs,
                   borderRadius: theme.radius.md,
                   "&:hover": {
-                    background: theme.colors.gray[1],
+                    background: dark
+                      ? theme.colors.dark[8]
+                      : theme.colors.gray[2],
                   },
                   transition: "all .2s",
                 })}
@@ -184,24 +203,34 @@ export default function CustomNavbar({ children }: ICustomNavbarProps) {
       </Group>
 
       <Collapse in={opened}>
-        <Group
-          direction="column"
-          sx={(theme) => ({
-            marginBottom: theme.spacing.lg,
-          })}
+        <Box
+          style={{
+            zIndex: 5,
+            height: "100vh",
+            position: "absolute",
+            background: "#eff2f5",
+            width: "100vw",
+          }}
         >
-          <Link href="/" passHref>
-            <Text component="a" weight={500}>
-              Accueil
-            </Text>
-          </Link>
+          <Group
+            direction="column"
+            sx={(theme) => ({
+              marginBottom: theme.spacing.lg,
+            })}
+          >
+            <Link href="/" passHref>
+              <Text component="a" weight={500}>
+                Accueil
+              </Text>
+            </Link>
 
-          <Link href="/" passHref>
-            <Text component="a" weight={500}>
-              A propos
-            </Text>
-          </Link>
-        </Group>
+            <Link href="/" passHref>
+              <Text component="a" weight={500}>
+                A propos
+              </Text>
+            </Link>
+          </Group>
+        </Box>
       </Collapse>
 
       {children}
