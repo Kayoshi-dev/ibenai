@@ -69,6 +69,52 @@ const Home: NextPage = () => {
       <Title>Your upcoming events</Title>
 
       <Grid p="md" mb="lg" className={classes.cardEvent}>
+        <Grid.Col
+          span={12}
+          sm={6}
+          className={classes.imageWrapper}
+          p={0}
+          style={{ maxHeight: "160px", borderRadius: theme.radius.md }}
+        >
+          <Image
+            radius="md"
+            className={classes.cardEventImage}
+            src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+            height={160}
+            alt="Norway"
+          />
+        </Grid.Col>
+        <Grid.Col
+          span={12}
+          sm={6}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <Title order={5} pb="xs" style={{ paddingTop: 0 }}>
+            Norway Fjord Adventures
+          </Title>
+
+          <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
+            With Fjord Tours you can explore more of the magical fjord
+            landscapes with tours and activities on and around the fjords of
+            Norway
+          </Text>
+
+          <AvatarsGroup limit={2} total={7}>
+            <Avatar
+              src="https://randomuser.me/api/portraits/women/51.jpg"
+              component="a"
+              href="https://github.com/rtivital"
+            />
+            <Avatar src="https://randomuser.me/api/portraits/men/54.jpg" />
+          </AvatarsGroup>
+        </Grid.Col>
+      </Grid>
+
+      <Grid p="md" mb="lg" className={classes.cardEvent}>
         <Grid.Col span={12} sm={6} className={classes.imageWrapper}>
           <Image
             radius="md"
@@ -123,6 +169,72 @@ const Home: NextPage = () => {
               <FaMapMarkerAlt />
               Tokyo
             </Text>
+            <AvatarsGroup limit={2} total={7}>
+              <Avatar
+                src="https://randomuser.me/api/portraits/women/51.jpg"
+                component="a"
+                href="https://github.com/rtivital"
+              />
+              <Avatar src="https://randomuser.me/api/portraits/men/54.jpg" />
+            </AvatarsGroup>
+          </Group>
+        </Grid.Col>
+      </Grid>
+
+      <Grid p="md" mb="lg" className={classes.cardEvent}>
+        <Grid.Col span={12} sm={6} className={classes.imageWrapper}>
+          <Image
+            radius="md"
+            className={classes.cardEventImage}
+            src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2072&q=80"
+            height={160}
+            alt="Norway"
+          />
+        </Grid.Col>
+        <Grid.Col
+          span={12}
+          sm={6}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <Title order={5} className={classes.cardTitle}>
+            Visiting Tokyo
+          </Title>
+
+          <Text
+            size="sm"
+            pb="xl"
+            style={{ color: secondaryColor, lineHeight: 1.5 }}
+            lineClamp={3}
+          >
+            Beginning its existence as a center of postwar black-market
+            activity, Akihabara later became the showcase of Japanese tech,
+            jam-packed with shops selling all kinds of electronics and IT to the
+            world.
+          </Text>
+
+          <Group position="apart">
+            <Group>
+              <Text
+                size="sm"
+                color="dimmed"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <FaMapMarkerAlt />
+                Tokyo
+              </Text>
+
+              <Text
+                size="sm"
+                color="dimmed"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <AiFillCalendar /> 10th May 2022
+              </Text>
+            </Group>
             <AvatarsGroup limit={2} total={7}>
               <Avatar
                 src="https://randomuser.me/api/portraits/women/51.jpg"

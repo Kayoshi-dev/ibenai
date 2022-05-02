@@ -24,6 +24,8 @@ import { joiResolver, useForm } from "@mantine/form";
 import { ClockIcon } from "@modulz/radix-icons";
 import { BsCalendarEvent } from "react-icons/bs";
 import NewEventSchema from "../../utils/schemas/NewEventSchema";
+import { getApiUrl } from "../../utils/getEnv";
+import { LatLng } from "leaflet";
 
 const DraggableMarkerMap = dynamic(
   () => import("../../components/map/DraggableMarkerMap"),
@@ -31,6 +33,18 @@ const DraggableMarkerMap = dynamic(
     ssr: false,
   }
 );
+
+interface FormValues {
+  coverPicture: File | null;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  startTime: Date | string;
+  endDate: Date;
+  endTime: Date | string;
+  position: LatLng;
+}
 
 // @ts-ignore
 function ImageUploadIcon({ status, ...props }) {
@@ -55,29 +69,39 @@ function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
     : theme.black;
 }
 
+const handleForm = async (values: FormValues) => {
+  const formData = new FormData();
+
+  for (const input in values) {
+    if (input === "coverPicture") {
+      formData.append("coverPicture", values.coverPicture[0]);
+    } else {
+      console.log(values[input]);
+      formData.append(input, values[input]);
+    }
+  }
+
+  const newEvent = await fetch(`${getApiUrl()}events/`, {
+    method: "POST",
+    body: formData,
+  });
+
+  console.log("done");
+};
+
 export default function NewEventForm() {
   const theme = useMantineTheme();
-  const form = useForm<{
-    coverPicture: File[] | null;
-    title: string;
-    description: string;
-    address: string;
-    dateStart: Date;
-    timeStart: Date | string;
-    dateEnd: Date;
-    timeEnd: Date | string;
-    position: { lat: number; lng: number };
-  }>({
+  const form = useForm<FormValues>({
     schema: joiResolver(NewEventSchema),
     initialValues: {
       coverPicture: null,
       title: "",
       description: "",
-      address: "",
-      dateStart: new Date(),
-      timeStart: "",
-      dateEnd: new Date(),
-      timeEnd: "",
+      location: "",
+      startDate: new Date(),
+      startTime: "",
+      endDate: new Date(),
+      endTime: "",
       position: {
         lat: 45.188529,
         lng: 5.724524,
@@ -87,8 +111,8 @@ export default function NewEventForm() {
 
   // Use effect about start and end date
   useEffect(() => {
-    if (form.values.dateStart > form.values.dateEnd) {
-      form.setFieldValue("dateEnd", form.values.dateStart);
+    if (form.values.startDate > form.values.endDate) {
+      form.setFieldValue("endDate", form.values.startDate);
     }
   }, [form]);
 
@@ -105,7 +129,7 @@ export default function NewEventForm() {
   const { classes } = useStyles();
 
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form onSubmit={form.onSubmit(handleForm)} encType="multipart/form-data">
       <InputWrapper
         label="Cover picture"
         pb="md"
@@ -195,7 +219,7 @@ export default function NewEventForm() {
           minDate={new Date()}
           placeholder="Pick the starting date"
           label="Pick the starting date"
-          {...form.getInputProps("dateStart")}
+          {...form.getInputProps("startDate")}
           required
         />
 
@@ -204,17 +228,17 @@ export default function NewEventForm() {
           label="Pick starting time"
           placeholder="Pick time"
           icon={<ClockIcon />}
-          {...form.getInputProps("timeStart")}
+          {...form.getInputProps("startTime")}
           clearable
         />
 
         <DatePicker
           radius="md"
           icon={<BsCalendarEvent />}
-          minDate={form.values.dateStart}
+          minDate={form.values.startDate}
           placeholder="Pick the ending date"
           label="Pick the ending date"
-          {...form.getInputProps("dateEnd")}
+          {...form.getInputProps("endDate")}
           required
         />
 
@@ -223,7 +247,7 @@ export default function NewEventForm() {
           label="Pick ending time"
           placeholder="Pick time"
           icon={<ClockIcon />}
-          {...form.getInputProps("timeEnd")}
+          {...form.getInputProps("endTime")}
           clearable
         />
       </SimpleGrid>
@@ -256,7 +280,7 @@ export default function NewEventForm() {
             radius="md"
             label="Change the location name of the event (if needed)"
             required
-            {...form.getInputProps("address")}
+            {...form.getInputProps("location")}
           />
         </Grid.Col>
       </Grid>

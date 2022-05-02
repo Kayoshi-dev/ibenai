@@ -16,7 +16,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { LatLngExpression, Marker as LeafletMarker } from "leaflet";
+import { LatLng, LatLngExpression, Marker as LeafletMarker } from "leaflet";
 import {
   Box,
   Button,
@@ -68,7 +68,7 @@ export default function DraggableMarkerMap({
       .then((r) => r.json())
       .then((formattedData) => {
         console.log(formattedData);
-        updateFormValues("address", formattedData.display_name);
+        updateFormValues("location", formattedData.display_name);
       });
   }, [position]);
 
@@ -153,10 +153,13 @@ function ButtonLocalizeUser() {
       color="dark"
       onClick={() => {
         navigator.geolocation.getCurrentPosition((userPosition) => {
-          updateFormValues("position", {
-            lat: userPosition?.coords?.latitude,
-            lng: userPosition?.coords?.longitude,
-          });
+          updateFormValues(
+            "position",
+            new LatLng(
+              userPosition?.coords?.latitude,
+              userPosition?.coords?.longitude
+            )
+          );
 
           map.flyTo(
             {

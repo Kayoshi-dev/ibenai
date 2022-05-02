@@ -11,18 +11,18 @@ export default Joi.object({
     .max(500)
     .message("Description is required")
     .required(),
-  address: Joi.string()
+  location: Joi.string()
     .min(3)
     .max(250)
-    .message("Address is required")
+    .message("Location is required")
     .required(),
-  dateStart: Joi.date()
+  startDate: Joi.date()
     .greater(Date.now())
     .message("Starting date is required")
     .required(),
-  timeStart: Joi.string().allow(null, ""),
-  dateEnd: Joi.date().min(Joi.ref("dateStart")).required(),
-  timeEnd: Joi.string().allow(null, ""),
+  startTime: Joi.date().allow(null, ""),
+  endDate: Joi.date().min(Joi.ref("startDate")).required(),
+  endTime: Joi.date().allow(null, ""),
   position: Joi.object({
     lat: Joi.number().required(),
     lng: Joi.number().required(),
